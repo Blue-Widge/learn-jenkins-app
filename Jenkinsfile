@@ -32,6 +32,7 @@ pipeline {
                 sh '''
                     echo "Test stage"
                     grep "" ./build/index.html 1> /dev/null
+                    npm test
                 '''
             }
         }
