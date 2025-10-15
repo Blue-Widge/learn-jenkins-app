@@ -31,6 +31,7 @@ pipeline {
             {
                 sh '''
                     echo "Test stage"
+                    grep "" ./build/index.html 1>&2 /dev/null
                 '''
             }
         }
