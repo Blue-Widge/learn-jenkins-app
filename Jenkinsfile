@@ -24,46 +24,51 @@ pipeline {
                 '''
             }
         }
-
-        stage('Test')
+        stage("AllTests")
         {
-            agent
+            parallel
             {
-                docker
+                stage('UnitTest')
                 {
-                    image 'node:18-alpine'
-                    reuseNode true
+                    agent
+                    {
+                        docker
+                        {
+                            image 'node:18-alpine'
+                            reuseNode true
+                        }
+                    }
+                    steps
+                    {
+                        sh '''
+                            echo "Test stage"
+                            grep "" ./build/index.html 1> /dev/null
+                            npm test
+                        '''
+                    }
                 }
-            }
-            steps
-            {
-                sh '''
-                    echo "Test stage"
-                    grep "" ./build/index.html 1> /dev/null
-                    npm test
-                '''
-            }
-        }
 
-        stage('End2End')
-        {
-            agent
-            {
-                docker
+                stage('End2EndTest')
                 {
-                    image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
-                    reuseNode true
-                    //args '-u root:root' Bad idea
+                    agent
+                    {
+                        docker
+                        {
+                            image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                            reuseNode true
+                            //args '-u root:root' Bad idea
+                        }
+                    }
+                    steps
+                    {
+                        sh '''
+                            npm install serve
+                            node_modules/.bin/serve -s build&
+                            sleep 20
+                            npx playwright test
+                        '''
+                    }
                 }
-            }
-            steps
-            {
-                sh '''
-                    npm install serve
-                    node_modules/.bin/serve -s build&
-                    sleep 20
-                    npx playwright test
-                '''
             }
         }
     }
