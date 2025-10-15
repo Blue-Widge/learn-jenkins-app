@@ -46,6 +46,14 @@ pipeline {
                             npm test
                         '''
                     }
+                    
+                    post
+                    {
+                        always
+                        {
+                            junit 'JunitTest-results/junit.xml'
+                        }
+                    }
                 }
 
                 stage('End2EndTest')
@@ -70,13 +78,6 @@ pipeline {
                     }
                 }
             }
-        }
-    }
-    post
-    {
-        always
-        {
-            junit 'JunitTest-results/junit.xml'
         }
     }
 }
