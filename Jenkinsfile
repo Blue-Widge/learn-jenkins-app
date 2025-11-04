@@ -101,7 +101,7 @@ pipeline {
             {
                 failure
                 {
-                    sh 'cat /home/node/.npm/_logs/2025-11-04T15_15_25_950Z-debug-0.log'
+                    sh 'cat /home/node/.npm/_logs/*.log'
                 }
             }
         }
