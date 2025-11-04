@@ -92,6 +92,9 @@ pipeline {
             steps 
             {
                 sh '''
+                    npm config set strict-ssl false
+                    npm install
+                    npm ci
                     npm install sharp
                     npm install netlify-cli@20.1.1
                     node_modules/.bin/netlify --version
