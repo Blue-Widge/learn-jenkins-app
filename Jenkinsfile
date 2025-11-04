@@ -96,9 +96,17 @@ pipeline {
                     npm install
                     npm ci
                     npm install sharp
+                    apt-get install -y build-essential
                     npm install netlify-cli@20.1.1
                     node_modules/.bin/netlify --version
                 '''
+            }
+            post
+            {
+                failure
+                {
+                    sh 'cat /home/node/.npm/_logs/2025-11-04T15_15_25_950Z-debug-0.log'
+                }
             }
         }
     }
