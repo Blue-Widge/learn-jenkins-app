@@ -28,18 +28,21 @@ pipeline {
         {
             parallel
             {
-                agent
+                stage('NetlifyImage')
                 {
-                    docker
+                    agent
                     {
-                        image 'dind:latest'
-                        reuseNode true
-                    }
+                        docker
+                        {
+                            image 'dind:latest'
+                            reuseNode true
+                        }
 
-                }
-                steps
-                {
-                    sh 'docker build -t node-netlify:local -f Dockerfile.netlifyImage ./myImages/.'
+                    }
+                    steps
+                    {
+                        sh 'docker build -t node-netlify:local -f Dockerfile.netlifyImage ./myImages/.'
+                    }
                 }
             }
         }
