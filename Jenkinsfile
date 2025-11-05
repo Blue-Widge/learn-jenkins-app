@@ -30,21 +30,10 @@ pipeline {
             {
                 stage('NetlifyImage')
                 {
-                    agent
-                    {
-                        docker
-                        {
-                            image 'docker:dind'
-                            args '-u root:sudo'
-                            reuseNode true
-                        }
-
-                    }
+                    agent any
                     steps
                     {
-                        sh '''
-                        docker build -t node-netlify:local -f Dockerfile.netlifyImage ./myImages/.
-                        '''
+                        sh 'docker build -t myImages/netlifyImage:latest ./myImages/.'
                     }
                 }
             }
