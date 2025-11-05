@@ -33,7 +33,7 @@ pipeline {
                     agent any
                     steps
                     {
-                        sh 'docker build -t myImages/netlifyImage:latest ./myImages/.'
+                        sh 'docker build -t myimages/netlifyImage:latest ./myImages/.'
                     }
                 }
             }
@@ -98,7 +98,7 @@ pipeline {
             agent 
             {
                 docker {
-                    image 'myImages/netlifyImage:latest'
+                    image 'myimages/netlifyImage:latest'
                     reuseNode true
                 }
             }
