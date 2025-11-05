@@ -79,12 +79,11 @@ pipeline {
                 }
             }
         }
-        stage("Deploy") 
+        stage('Deploy') 
         {
-            agent
+            agent 
             {
-                docker
-                {
+                docker {
                     image 'node:18-alpine'
                     reuseNode true
                 }
@@ -92,18 +91,30 @@ pipeline {
             steps 
             {
                 sh '''
+                    # Update Alpine and install required packages for sharp + SSL
+                    apk add --no-cache ca-certificates build-base vips-dev python3 make g++
+
+                    # (Optional) update certs just in case
+                    update-ca-certificates
+
+                    # Configure npm
                     npm config set strict-ssl false
+
+                    # Install Netlify CLI
                     npm install netlify-cli@20.1.1
+
+                    # Check installed version
                     node_modules/.bin/netlify --version
                 '''
             }
-            post
+            post 
             {
-                failure
+                failure 
                 {
-                    sh 'cat /home/node/.npm/_logs/*.log'
+                    sh 'cat /home/node/.npm/_logs/*-debug-0.log || true'
                 }
             }
         }
+
     }
 }
