@@ -35,7 +35,7 @@ pipeline {
                         docker
                         {
                             image 'docker:dind'
-                            args '-u root:sudo -v .:.'
+                            args '-u root:sudo'
                             reuseNode true
                         }
 
