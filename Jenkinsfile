@@ -34,7 +34,7 @@ pipeline {
                     {
                         docker
                         {
-                            image 'dind:latest'
+                            image 'docker:dind'
                             reuseNode true
                         }
 
