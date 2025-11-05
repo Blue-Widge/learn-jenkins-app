@@ -24,6 +24,25 @@ pipeline {
                 '''
             }
         }
+        stage('CreateImages')
+        {
+            parallel
+            {
+                agent
+                {
+                    docker
+                    {
+                        image 'dind:latest'
+                        reuseNode true
+                    }
+
+                }
+                steps
+                {
+                    sh 'docker build -t node-netlify:local -f Dockerfile.netlifyImage ./myImages/.'
+                }
+            }
+        }
         stage("AllTests")
         {
             parallel
@@ -84,27 +103,13 @@ pipeline {
             agent 
             {
                 docker {
-                    image 'node:18-alpine'
-                    args '--user root'
+                    image 'myImages/netlifyImage:latest'
                     reuseNode true
                 }
             }
             steps 
             {
                 sh '''
-                    # Update Alpine and install required packages for sharp + SSL
-                    apk add --no-cache ca-certificates build-base vips-dev python3 make g++
-
-                    # (Optional) update certs just in case
-                    update-ca-certificates
-
-                    # Configure npm
-                    npm config set strict-ssl false
-
-                    # Install Netlify CLI
-                    npm install netlify-cli@20.1.1
-
-                    # Check installed version
                     node_modules/.bin/netlify --version
                 '''
             }

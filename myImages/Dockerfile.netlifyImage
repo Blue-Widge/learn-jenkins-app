@@ -1,0 +1,12 @@
+FROM node:18-alpine
+# Update Alpine and install required packages for sharp + SSL
+RUN apk add --no-cache ca-certificates build-base vips-dev python3 make g++
+
+# (Optional) update certs just in case
+RUN update-ca-certificates
+
+# Configure npm
+RUN npm config set strict-ssl false
+
+# Install Netlify CLI
+RUN npm install netlify-cli@20.1.1
