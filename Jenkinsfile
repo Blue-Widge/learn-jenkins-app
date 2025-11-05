@@ -42,9 +42,9 @@ pipeline {
                     steps
                     {
                         sh '''
-                        su -
-                            docker build -t node-netlify:local -f Dockerfile.netlifyImage ./myImages/.
-                            '''
+                        su root
+                        docker build -t node-netlify:local -f Dockerfile.netlifyImage ./myImages/.
+                        '''
                     }
                 }
             }
