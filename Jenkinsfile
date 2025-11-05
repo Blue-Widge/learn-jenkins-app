@@ -41,7 +41,10 @@ pipeline {
                     }
                     steps
                     {
-                        sh 'sudo docker build -t node-netlify:local -f Dockerfile.netlifyImage ./myImages/.'
+                        sh '''
+                        su -
+                            docker build -t node-netlify:local -f Dockerfile.netlifyImage ./myImages/.
+                            '''
                     }
                 }
             }
