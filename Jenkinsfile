@@ -35,6 +35,7 @@ pipeline {
                         docker
                         {
                             image 'docker:dind'
+                            args '-u root:sudo -v .:.'
                             reuseNode true
                         }
 
@@ -42,7 +43,6 @@ pipeline {
                     steps
                     {
                         sh '''
-                        su root
                         docker build -t node-netlify:local -f Dockerfile.netlifyImage ./myImages/.
                         '''
                     }
